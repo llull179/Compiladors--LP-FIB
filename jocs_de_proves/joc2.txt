@@ -1,0 +1,21 @@
+#Funció d'Euclides, Exemple de l'enunciat
+
+# funció que rep dos enters i en torna el seu maxim comu divisor
+
+Euclides a b
+{
+  while a != b
+  {
+    if a > b 
+    {
+      a <- a - b
+    }
+    else
+    {
+      b <- b - a
+    }
+  }
+  a
+}
+
+Euclides 6 8

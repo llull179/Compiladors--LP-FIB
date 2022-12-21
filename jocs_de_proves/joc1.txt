@@ -1,0 +1,5 @@
+#Funcions basiques, exemple de l'enunciat
+
+DOS { 2 }
+Suma2 x { DOS + x }
+Suma2 3
