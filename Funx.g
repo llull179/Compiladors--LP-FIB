@@ -9,13 +9,15 @@ instr: assignacio
     | bucle
     | definicioFuncio
     | expr
+    | comparacio
     ;
 
-
+//CONDICIOANLS
 condicional: IF comparacio '{' instr* '}'   #IfThen
         | IF comparacio '{' instr* '}' ELSE '{' instr* '}' #IfThenElse
         ;
 
+//COMPARACIO
 comparacio: '(' comparacio ')'  #BracketsComp
         |comparacio AND comparacio              #And
         | comparacio OR comparacio               #Or
@@ -29,13 +31,15 @@ comparacio: '(' comparacio ')'  #BracketsComp
         | expr MEN expr   #Men
         ;
 
-bucle: WHILE comparacio '{' instr* '}'
-;
-
-assignacio: TXT ASSIG expr  #Assig
+//BUCLES
+bucle: WHILE comparacio '{' instr* '}'  #bucleWhile
+    | FOR assignacio ';' comparacio ';' assignacio '{' instr* '}'  #bucleFor
+    ;
+//ASSIGNACIONS
+assignacio: TXT ASSIG (expr|comparacio)  #Assig
 ;        
 
-
+//EXPRESIONS
 expr: '(' expr ')'              #Brackets
     | TXTFUN cjtExpr                          #FuncioCall
     |<assoc=right> expr POW expr #Potencia
@@ -49,16 +53,19 @@ expr: '(' expr ')'              #Brackets
     | TXT                       #Variable
     ;
 
+//DECLARACIÓ FUNCIONS
 definicioFuncio: TXTFUN cjtParams '{' instr* '}';
 
 cjtParams: TXT*;
 
 cjtExpr: expr*;
 
+
 IF : 'if';
 ELSE:'else';
 
 WHILE:'while';
+FOR: 'for';
 
 FLOAT: INT+ '.' INT*;
 INT : [0-9]+ ;

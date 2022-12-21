@@ -89,8 +89,13 @@ class FunxVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by FunxParser#bucle.
-    def visitBucle(self, ctx:FunxParser.BucleContext):
+    # Visit a parse tree produced by FunxParser#bucleWhile.
+    def visitBucleWhile(self, ctx:FunxParser.BucleWhileContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by FunxParser#bucleFor.
+    def visitBucleFor(self, ctx:FunxParser.BucleForContext):
         return self.visitChildren(ctx)
 
 

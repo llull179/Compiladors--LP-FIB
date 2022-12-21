@@ -17,13 +17,12 @@ class representacioFuncio():
 class EvalVisitor(FunxVisitor):
 
     def __init__(self):
-        self.taulaSimbols = {}
         self.dictFuncions = {}
         self.pilaContexte = [{}]
 
     def visitRoot(self, ctx):
         l = list(ctx.getChildren())
-        print(self.visit(l[0]))
+        print("Out: "+ str(self.visit(l[0])))
 
     '''
     --------------------------------------------------------
@@ -32,9 +31,8 @@ class EvalVisitor(FunxVisitor):
     '''
 
     def visitBrackets(self, ctx: FunxParser.BracketsContext):
-        l = list(ctx.getChildren()) 
+        l = list(ctx.getChildren())
         return self.visit(l[1])
-
 
     def visitBracketsComp(self, ctx: FunxParser.BracketsCompContext):
         l = list(ctx.getChildren())
@@ -71,39 +69,28 @@ class EvalVisitor(FunxVisitor):
 
     def visitMaj(self, ctx: FunxParser.MajContext):
         l = list(ctx.getChildren())
-        if (self.visit(l[0]) > self.visit(l[2])):
-            return 1
-        else: return 0
+        return int(self.visit(l[0]) > self.visit(l[2]))
 
     def visitMajeq(self, ctx: FunxParser.MajContext):
         l = list(ctx.getChildren())
-        if (self.visit(l[0]) >= self.visit(l[2])):
-            return 1
-        else: return 0
+        return int(self.visit(l[0]) >= self.visit(l[2]))
+        
 
     def visitMen(self, ctx: FunxParser.MajContext):
         l = list(ctx.getChildren())
-        if (self.visit(l[0]) < self.visit(l[2])):
-            return 1
-        else: return 0
+        return int(self.visit(l[0]) < self.visit(l[2]))
 
     def visitMeneq(self, ctx: FunxParser.MajContext):
         l = list(ctx.getChildren())
-        if (self.visit(l[0]) <= self.visit(l[2])):
-            return 1
-        else: return 0
+        return int(self.visit(l[0]) <= self.visit(l[2]))
 
     def visitEq(self, ctx: FunxParser.MajContext):
         l = list(ctx.getChildren())
-        if (self.visit(l[0]) == self.visit(l[2])):
-            return 1
-        else: return 0
+        return int(self.visit(l[0]) == self.visit(l[2]))
 
     def visitDif(self, ctx: FunxParser.MajContext):
         l = list(ctx.getChildren())
-        if (self.visit(l[0]) != self.visit(l[2])):
-            return 1
-        else: return 0
+        return int(self.visit(l[0]) != self.visit(l[2]))
 
     '''
     --------------------------------------------------------
@@ -113,18 +100,13 @@ class EvalVisitor(FunxVisitor):
 
     def visitAnd(self, ctx: FunxParser.AndContext):
         l = list(ctx.getChildren())
-        if self.visit(l[0]) and self.visit(l[2]):
-            return 1
-        else:
-            return 0
-    
+        return int(self.visit(l[0]) and self.visit(l[2]))
+
+
     def visitOr(self, ctx: FunxParser.OrContext):
         l = list(ctx.getChildren())
-        if self.visit(l[0]) or self.visit(l[2]):
-            return 1
-        else:
-            return 0
-    
+        return int(self.visit(l[0]) or self.visit(l[2]))
+
     def visitXor(self, ctx: FunxParser.XorContext):
         l = list(ctx.getChildren())
         if not self.visit(l[0]) and self.visit(l[2]):
@@ -133,12 +115,11 @@ class EvalVisitor(FunxVisitor):
             return 1
         else:
             return 0
-   
+
     def visitNot(self, ctx: FunxParser.NotContext):
         l = list(ctx.getChildren())
         return not self.visit(l[1])
 
-   
     '''
     --------------------------------------------------------
     -------------------ASSIGNACIO VARIABLES-----------------
@@ -147,14 +128,15 @@ class EvalVisitor(FunxVisitor):
 
     def visitAssig(self, ctx):
         l = list(ctx.getChildren())
-        #self.taulaSimbols[l[0].getText()] = self.visit(l[2])
-        self.pilaContexte[-1][l[0].getText()] =self.visit(l[2])
+        # self.taulaSimbols[l[0].getText()] = self.visit(l[2])
+        self.pilaContexte[-1][l[0].getText()] = self.visit(l[2])
 
     '''
     --------------------------------------------------------
     -------------------VISITA VALORS-----------------
     --------------------------------------------------------
     '''
+
     def visitValorInt(self, ctx):
         l = list(ctx.getChildren())
         return int(l[0].getText())
@@ -195,7 +177,7 @@ class EvalVisitor(FunxVisitor):
         result = None
         if comparacio:
             i = 3
-            while l[i].getText() != '}' and result == None:
+            while l[i].getText() != '}' and result is None:
                 result = self.visit(l[i])
                 i = i + 1
         return result
@@ -206,12 +188,12 @@ class EvalVisitor(FunxVisitor):
         result = None
         if comparacio:
             i = 3
-            while l[i].getText() != '}' and result == None:
+            while l[i].getText() != '}' and result is None:
                 result = self.visit(l[i])
                 i = i + 1
         else:
             i = 5
-            while l[i].getText() != '}' and result == None:
+            while l[i].getText() != '}' and result is None:
                 result = self.visit(l[i])
                 i = i + 1
         return result
@@ -221,17 +203,28 @@ class EvalVisitor(FunxVisitor):
     -------------------BUCLES------------------
     --------------------------------------------------------
     '''
-
-    def visitBucle(self, ctx: FunxParser.BucleContext):
+    
+    def visitBucleWhile(self, ctx: FunxParser.BucleWhileContext):
         l = list(ctx.getChildren())
         result = None
         while self.visit(l[1]):
             i = 3
-            while l[i].getText() != "}" and result == None:
+            while l[i].getText() != "}" and result is None:
                 result = self.visit(l[i])
                 i = i + 1
         return result
-
+    
+    def visitBucleFor(self, ctx: FunxParser.BucleForContext):
+        l = list(ctx.getChildren())
+        result = None
+        self.visit(l[1])
+        while self.visit(l[3]):
+            i = 7
+            while l[i].getText() != '}' and result == None:
+                result = self.visit(l[i])
+                i = i + 1
+            self.visit(l[5])
+        return result
 
     '''
     --------------------------------------------------------
@@ -239,52 +232,50 @@ class EvalVisitor(FunxVisitor):
     --------------------------------------------------------
     '''
 
-
     def visitDefinicioFuncio(self, ctx: FunxParser.DefinicioFuncioContext):
         l = list(ctx.getChildren())
         idFun = l[0].getText()
         if (idFun in self.dictFuncions):
-            raise Exception("ERR: La funcio "+idFun+" ja esta definida")
+            raise Exception("ERR: La funcio " + idFun + " ja esta definida")
 
         ''' codiFun = []
-        i = 3            
+        i = 3
         for i in range(i, len(l)-1):
             codiFun.append(l[i])
         '''
-        self.dictFuncions[idFun] = representacioFuncio(idFun, self.visit(l[1]), ctx)
-        
+        self.dictFuncions[idFun] = representacioFuncio(
+            idFun, self.visit(l[1]), ctx)
 
-    
     def visitFuncioCall(self, ctx: FunxParser.FuncioCallContext):
         l = list(ctx.getChildren())
         idFun = l[0].getText()
         if (idFun not in self.dictFuncions):
-            raise Exception("ERR: La funcio "+idFun+" no existeix")
+            raise Exception("ERR: La funcio " + idFun + " no existeix")
 
         parFun = self.dictFuncions[idFun].params
         valFun = self.visit(l[1])
 
         if len(parFun) != len(valFun):
-            raise Exception ("ERR: Els parametres no coincideixen")
+            raise Exception("ERR: Els parametres no coincideixen")
 
         ctxActual = {}
 
         i = 0
         while i < len(valFun):
             ctxActual[parFun[i]] = valFun[i]
-            i = i+1
+            i = i + 1
 
         self.pilaContexte.append(ctxActual)
         result = None
         i = 0
-        
+
         con = list(self.dictFuncions[idFun].context.getChildren())
         while con[i].getText() != "{":
-            i+=1 
-        i+=1
-        while con[i].getText() != "}" and result == None:
-                result = self.visit(con[i])
-                i = i + 1
-        
+            i += 1
+        i += 1
+        while con[i].getText() != "}" and result is None:
+            result = self.visit(con[i])
+            i = i + 1
+
         self.pilaContexte.pop()
         return result

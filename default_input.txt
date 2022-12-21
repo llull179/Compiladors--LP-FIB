@@ -1,2 +1,8 @@
-#esto es in comentàrióáèl'encunciart
-0
+Main {
+    a<-0
+    for x<-0; x<3; x<-x+1 {
+        a<-a+5
+    }
+    a
+}
+Main
