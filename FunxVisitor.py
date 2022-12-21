@@ -1,4 +1,4 @@
-# Generated from Funx.g by ANTLR 4.11.1
+# Generated from Funx.g4 by ANTLR 4.11.1
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .FunxParser import FunxParser
@@ -101,6 +101,16 @@ class FunxVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by FunxParser#Assig.
     def visitAssig(self, ctx:FunxParser.AssigContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by FunxParser#print.
+    def visitPrint(self, ctx:FunxParser.PrintContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by FunxParser#ValorIntNeg.
+    def visitValorIntNeg(self, ctx:FunxParser.ValorIntNegContext):
         return self.visitChildren(ctx)
 
 

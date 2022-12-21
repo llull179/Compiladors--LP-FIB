@@ -22,7 +22,7 @@ class EvalVisitor(FunxVisitor):
 
     def visitRoot(self, ctx):
         l = list(ctx.getChildren())
-        print("Out: "+ str(self.visit(l[0])))
+        print("Out: " + str(self.visit(l[0])))
 
     '''
     --------------------------------------------------------
@@ -59,7 +59,11 @@ class EvalVisitor(FunxVisitor):
         if self.visit(l[2]) == 0:
             raise Exception("ERR: divisio per 0")
         else:
-            return self.visit(l[0]) / self.visit(l[2])
+            return int(self.visit(l[0]) / self.visit(l[2]))
+
+    def visitModul(self, ctx: FunxParser.ModulContext):
+        l = list(ctx.getChildren())
+        return self.visit(l[0]) % self.visit(l[2])
 
     '''
     --------------------------------------------------------
@@ -74,7 +78,6 @@ class EvalVisitor(FunxVisitor):
     def visitMajeq(self, ctx: FunxParser.MajContext):
         l = list(ctx.getChildren())
         return int(self.visit(l[0]) >= self.visit(l[2]))
-        
 
     def visitMen(self, ctx: FunxParser.MajContext):
         l = list(ctx.getChildren())
@@ -101,7 +104,6 @@ class EvalVisitor(FunxVisitor):
     def visitAnd(self, ctx: FunxParser.AndContext):
         l = list(ctx.getChildren())
         return int(self.visit(l[0]) and self.visit(l[2]))
-
 
     def visitOr(self, ctx: FunxParser.OrContext):
         l = list(ctx.getChildren())
@@ -165,6 +167,27 @@ class EvalVisitor(FunxVisitor):
         for p in l:
             par.append(p.getText())
         return par
+
+    def visitValorIntNeg(self, ctx: FunxParser.ValorIntNegContext):
+        l = list(ctx.getChildren())
+        return -1 * self.visit(l[1])
+    '''
+    --------------------------------------------------------
+    -------------------ESCRITURES------------------
+    --------------------------------------------------------
+    '''
+
+    def visitPrint(self, ctx: FunxParser.PrintContext):
+        l = list(ctx.getChildren())
+        i = 2
+        while i < len(l) and l[i].getText() != ')':
+            if l[i].getText() == '"':
+                print(l[i + 1].getText(), end='')
+                i += 2
+            else:
+                print(self.visit(l[i]), end='')
+            i += 2
+        print('')
     '''
     --------------------------------------------------------
     -------------------CONDICIONALS------------------
@@ -203,7 +226,7 @@ class EvalVisitor(FunxVisitor):
     -------------------BUCLES------------------
     --------------------------------------------------------
     '''
-    
+
     def visitBucleWhile(self, ctx: FunxParser.BucleWhileContext):
         l = list(ctx.getChildren())
         result = None
@@ -213,14 +236,14 @@ class EvalVisitor(FunxVisitor):
                 result = self.visit(l[i])
                 i = i + 1
         return result
-    
+
     def visitBucleFor(self, ctx: FunxParser.BucleForContext):
         l = list(ctx.getChildren())
         result = None
         self.visit(l[1])
         while self.visit(l[3]):
             i = 7
-            while l[i].getText() != '}' and result == None:
+            while l[i].getText() != '}' and result is None:
                 result = self.visit(l[i])
                 i = i + 1
             self.visit(l[5])
