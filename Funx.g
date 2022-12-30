@@ -43,7 +43,7 @@ assignacio: TXT ASSIG (expr|comparacio)  #Assig
 expr: '(' expr ')'              #Brackets
     | TXTFUN cjtExpr                          #FuncioCall
     |<assoc=right> expr POW expr #Potencia
-    | expr MULT expr           #Multiplicacio
+    | expr MULT expr            #Multiplicacio
     | expr DIV expr             #Divisio
     | expr MOD expr             #Modul
     | expr MES expr             #Suma

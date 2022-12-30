@@ -2,7 +2,7 @@ grammar Funx;
 
 root : codi EOF ;
 
-codi: (print | definicioFuncio)* (expr|comparacio)?;
+codi: (print | definicioFuncio)* (print|expr|comparacio)?;
 
 instr: assignacio
     | condicional
@@ -46,6 +46,7 @@ print: PRINT '(' ((expr|'"'cjtParams'"')('+' (expr |'"'cjtParams'"'))*)? ')';
 
 //EXPRESIONS
 expr: '(' expr ')'                              #Brackets
+    | REST expr                                 #ValorIntNeg
     | TXTFUN cjtExpr                            #FuncioCall
     |<assoc=right> expr POW expr                #Potencia
     | expr MULT expr                            #Multiplicacio
@@ -54,7 +55,6 @@ expr: '(' expr ')'                              #Brackets
     | expr MES expr                             #Suma
     | expr REST expr                            #Resta
     | INT                                       #ValorInt
-    | REST expr                                 #ValorIntNeg
     | FLOAT                                     #ValorFloat
     | TXT                                       #Variable
     ;

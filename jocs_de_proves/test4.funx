@@ -30,6 +30,8 @@ EsPrimePerfecte x {
     }
 }
 
+
+#Retrona 1 si tots els resiltats son correctes i 0 en cas contrari
 ComprovaResults {
     if EsPrimePerfecte 977 != 1 {0}
     if EsPrimePerfecte 978 != 0 {0}

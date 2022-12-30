@@ -261,11 +261,7 @@ class EvalVisitor(FunxVisitor):
         if (idFun in self.dictFuncions):
             raise Exception("ERR: La funcio " + idFun + " ja esta definida")
 
-        ''' codiFun = []
-        i = 3
-        for i in range(i, len(l)-1):
-            codiFun.append(l[i])
-        '''
+
         self.dictFuncions[idFun] = representacioFuncio(
             idFun, self.visit(l[1]), ctx)
 

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        background-color: lightblue;
+        font-size: 2em;
+      }
+
+      .error{
+        background-color: red;
+        padding: 10px;
+        border-radius: 4px; 
+        border: 2px black solid;
+      }
+      .margin {
+        margin:5px;
+        padding:10px;
+      }
+      /* Add some style to the columns and rows */
+      .column {
+        float: left;
+        width: 50%;
+      }
+      .row {
+        width: 100%;
+      }
+      /* Clear floats after the columns */
+      .row:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+    </style>
+  </head>
+  <body>
+    {% if error %}
+    <div class="error">
+      <p>Ha ocorregut un error, comprova si el codi introduït segueix les especificacions de Funx</p>
+    </div>
+    {% endif %}
+    <div class="column">
+      <div class="row">
+        <h1>Consola</h1>
+        <form method="post" action="/submit">
+          <label class ="margin" for="textbox">Introdueix codi en Funx:</label><br>
+          <textarea rows="17" cols="50" type="text" id="textbox" name="textbox"></textarea><br>
+          <input class ="margin" type="submit" value="Submit">
+        </form>
+        <form method="post" action="/reset">
+          <input class ="margin" type="submit" value="Reset">
+        </form>
+      </div>
+      <div class="row">
+        <h1>Funcions</h1>
+        <ul>
+          {% for i in funcions %}
+            <li>{{ i }} </li>
+          </br>
+          {% endfor %}
+      </div>
+    </div>
+    <div class="column">
+      <div class="row">
+        <h1>Resultats</h1>
+        <ul>
+          {% for item, value in resultats %}
+            <li> <b>IN: </b>{{ item }} </li>
+            <li> <b>OUT: </b>{{ value }}</li>
+          </br>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>

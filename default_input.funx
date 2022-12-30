@@ -1,0 +1,6 @@
+Main x y {
+    a<- -2+2
+    print("aixo executa per defecte")
+    a
+}
+Main 2 2
